@@ -7,7 +7,7 @@ import 'package:newcampusconnect/models.dart';
 import 'package:newcampusconnect/user/userhomepage.dart';
 
 class Root extends StatelessWidget {
-  Root({super.key});
+  Root({Key? key});
   final auth = AuthService();
 
   @override
@@ -25,7 +25,7 @@ class Root extends StatelessWidget {
             return AdmminScreen(user: user);
           }
         } else {
-          return const LoginRegisterPageHandler();
+          return LoginRegisterPageHandler();
         }
       },
     );
