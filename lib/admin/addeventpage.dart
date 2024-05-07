@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:newcampusconnect/commons.dart';
 import 'package:flutter/material.dart';
 
 class AddEventPage extends StatelessWidget {
-  AddEventPage({super.key});
+  AddEventPage({super.key, required this.typeOfEvent});
 
   // Controllers
   final _nameController = TextEditingController();
@@ -14,9 +18,12 @@ class AddEventPage extends StatelessWidget {
   final _formLinkController = TextEditingController();
   final _feedbackController = TextEditingController();
   final _drivelinkController = TextEditingController();
+  File? _receipt;
+  final String typeOfEvent;
 
   @override
   Widget build(BuildContext context) {
+    print(typeOfEvent);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -96,16 +103,58 @@ class AddEventPage extends StatelessWidget {
                 hint: 'Registration link for the event',
               ),
 
-              MyTextField(
-                controller: _feedbackController,
-                label: 'Feedback ',
-                hint: 'Feedback  for the event',
-              ),
-
+              // Google Drive Link
               MyTextField(
                 controller: _drivelinkController,
                 label: 'GoogleDrivelink ',
                 hint: 'Google drive link for videos',
+              ),
+
+              // Poster Uploader
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12.5, vertical: 17.5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 0.5, color: Colors.black),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MyText(
+                      'Upload a poster',
+                      size: 14,
+                      weight: FontWeight.w400,
+                      spacing: 1,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            var x = ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            print('Image Picker');
+                          },
+                          child: Container(
+                            height: 150,
+                            width: 150,
+                            color: const Color.fromARGB(87, 158, 158, 158),
+                            child: const Center(
+                              child: Icon(
+                                Icons.add_rounded,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
 
               // Submit button

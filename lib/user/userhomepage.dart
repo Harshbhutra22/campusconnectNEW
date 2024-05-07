@@ -1,16 +1,20 @@
 import 'package:newcampusconnect/admin/addeventpage.dart';
+import 'package:newcampusconnect/bottomNavBar.dart';
 import 'package:newcampusconnect/commons.dart';
+import 'package:newcampusconnect/models.dart';
 import 'package:newcampusconnect/user/eventTypePage.dart';
 import 'package:flutter/material.dart';
 
 class UserHomepage extends StatelessWidget {
-  const UserHomepage({super.key});
+  const UserHomepage({super.key, required this.user});
+  final CCUser user;
 
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: MyText(
           'CampusConnect',
@@ -37,6 +41,8 @@ class UserHomepage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar:
+          UserBottomNavigationBar(selectedIndex: 1, user: user),
     );
   }
 

@@ -1,6 +1,1 @@
-{
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  }
-}
+{"flutter":{"platforms":{"android":{"default":{"projectId":"campusconnect-7e80c","appId":"1:428862238264:android:46710218eada23488f80cd","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"campusconnect-7e80c","configurations":{"android":"1:428862238264:android:46710218eada23488f80cd","ios":"1:428862238264:ios:586f8ea06095b0578f80cd","macos":"1:428862238264:ios:586f8ea06095b0578f80cd","web":"1:428862238264:web:60954bbdbad721818f80cd","windows":"1:428862238264:web:6c5b8cf30e5a02528f80cd"}}}}}}

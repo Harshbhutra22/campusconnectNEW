@@ -1,17 +1,25 @@
 import 'package:newcampusconnect/admin/adminscreen.dart';
+import 'package:newcampusconnect/backend/authService.dart';
+import 'package:newcampusconnect/commons.dart';
 import 'package:newcampusconnect/user/userhomepage.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
+  const SignupPage({super.key, required this.callback});
+  final VoidCallback callback;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SignupForm(),
+      body: SignupForm(callback: callback),
     );
   }
 }
 
 class SignupForm extends StatefulWidget {
+  const SignupForm({super.key, required this.callback});
+  final VoidCallback callback;
+
   @override
   _SignupFormState createState() => _SignupFormState();
 }
@@ -22,12 +30,13 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _repasswordController = TextEditingController();
+  String accountType = 'user';
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Padding(
@@ -61,6 +70,76 @@ class _SignupFormState extends State<SignupForm> {
                 Container(
                   child: Column(
                     children: [
+                      const SizedBox(height: 20),
+                      // Account type switch
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // User
+                          GestureDetector(
+                            onTap: () {
+                              accountType = "user";
+                              setState(() {});
+                              print(accountType);
+                            },
+                            child: Container(
+                              width: 75,
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                  horizontal: 15, vertical: 3),
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 0.5, color: Colors.grey),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5),
+                                ),
+                                color: Colors.black,
+                              ),
+                              child: Center(
+                                child: MyText(
+                                  'User',
+                                  size: 14,
+                                  color: (accountType == 'user')
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Admin
+                          GestureDetector(
+                            onTap: () {
+                              accountType = "admin";
+                              setState(() {});
+                              print(accountType);
+                            },
+                            child: Container(
+                              width: 75,
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                  horizontal: 15, vertical: 3),
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 0.5, color: Colors.grey),
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(5),
+                                  bottomRight: Radius.circular(5),
+                                ),
+                                color: Colors.black,
+                              ),
+                              child: MyText(
+                                'Admin',
+                                size: 14,
+                                color: (accountType == 'admin')
+                                    ? Colors.white
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
                       TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(labelText: 'Name'),
@@ -109,25 +188,17 @@ class _SignupFormState extends State<SignupForm> {
                       ),
                       SizedBox(height: 25),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           // Perform login action here
                           String email = _emailController.text;
                           String password = _passwordController.text;
                           print('Email: $email, Password: $password');
 
-                          if (email == 'admin@gamil.com') {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AdmminScreen()),
-                                (route) => false);
-                          } else {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserHomepage()),
-                                (route) => false);
-                          }
+                          await AuthService().signUpWithUserCredentials(
+                              name: _nameController.text,
+                              email: email,
+                              password: password,
+                              role: accountType);
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -135,7 +206,7 @@ class _SignupFormState extends State<SignupForm> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.black),
-                          child: Text(
+                          child: const Text(
                             'Sign Up',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
@@ -144,15 +215,9 @@ class _SignupFormState extends State<SignupForm> {
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AdmminScreen()),
-                              (route) => false);
-                          // Navigate to registration page
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                          widget.callback();
                         },
-                        child: Text('Already have an account? Login'),
+                        child: const Text('Already have an account? Login'),
                       ),
                     ],
                   ),

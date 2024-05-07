@@ -1,14 +1,4 @@
 class Event {
-  // final _nameController = TextEditingController();
-  // final _descController = TextEditingController();
-  // final _dateController = TextEditingController();
-  // final _timeController = TextEditingController();
-  // final _venueController = TextEditingController();
-  // final _organiserNameController = TextEditingController();
-  // final _formLinkController = TextEditingController();
-  // final _feedbackController = TextEditingController();
-  // final _drivelinkController = TextEditingController();
-
   Event({
     required this.name,
     required this.desc,
@@ -32,4 +22,14 @@ class Event {
       imgName;
 
   String? driveLink;
+}
+
+class CCUser {
+  CCUser(
+      {required this.role,
+      required this.name,
+      required this.email,
+      required this.uID});
+  String name, role, email;
+  int uID;
 }

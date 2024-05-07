@@ -1,19 +1,23 @@
-import 'package:newcampusconnect/admin/adminscreen.dart';
-import 'package:newcampusconnect/user/userhomepage.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:newcampusconnect/backend/authService.dart';
+import 'package:newcampusconnect/commons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key, required this.callback});
+  final VoidCallback callback;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LoginForm(),
+      body: LoginForm(callback: callback),
     );
   }
 }
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({super.key, required this.callback});
+  final VoidCallback callback;
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -22,6 +26,7 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String accountType = 'user';
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +65,7 @@ class _LoginFormState extends State<LoginForm> {
               Container(
                 child: Column(
                   children: [
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(labelText: 'Email'),
@@ -70,10 +76,10 @@ class _LoginFormState extends State<LoginForm> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     TextFormField(
                       controller: _passwordController,
-                      decoration: InputDecoration(labelText: 'Password'),
+                      decoration: const InputDecoration(labelText: 'Password'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your password';
@@ -82,27 +88,15 @@ class _LoginFormState extends State<LoginForm> {
                       },
                       obscureText: true,
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         // Perform login action here
                         String email = _emailController.text;
                         String password = _passwordController.text;
                         print('Email: $email, Password: $password');
-
-                        if (email == 'admin@gamil.com') {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AdmminScreen()),
-                              (route) => false);
-                        } else {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserHomepage()),
-                              (route) => false);
-                        }
+                        await AuthService().signInWithEmailAndPassword(
+                            email: email, password: password);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -119,11 +113,7 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AdmminScreen()),
-                            (route) => false);
+                        widget.callback();
                         // Navigate to registration page
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
                       },
