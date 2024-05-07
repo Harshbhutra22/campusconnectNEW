@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:newcampusconnect/models.dart';
 
 class AuthService {
+
   final _auth = FirebaseAuth.instance;
   final _store = FirebaseFirestore.instance.collection('users');
 
@@ -50,9 +52,11 @@ class AuthService {
     };
   }
 
-  Future logout() async {
+  Future<void> logout() async {
     await _auth.signOut();
+    Get.offAllNamed('/login'); // Use '/login' to navigate to the login page
   }
+
 
   signInWithEmailAndPassword(
       {required String email, required String password}) async {
