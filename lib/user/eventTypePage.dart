@@ -1,10 +1,13 @@
+import 'package:get/get.dart';
 import 'package:newcampusconnect/commons.dart';
+import 'package:newcampusconnect/models/user_model.dart';
 import 'package:newcampusconnect/user/eventInfoPage.dart';
 import 'package:flutter/material.dart';
 
 import '../models.dart';
 
 class EventTypePage extends StatelessWidget {
+  EventsController eventsController = Get.put(EventsController());
   EventTypePage({super.key, required this.eventType});
   final String eventType;
 

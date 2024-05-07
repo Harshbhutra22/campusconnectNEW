@@ -1,25 +1,28 @@
 import 'dart:io';
-
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newcampusconnect/commons.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newcampusconnect/models/admin_model.dart';
+
 
 class AddEventPage extends StatelessWidget {
-  AddEventPage({super.key, required this.typeOfEvent});
+  final AddEventController addEventController = Get.put(AddEventController());
 
   // Controllers
-  final _nameController = TextEditingController();
-  final _descController = TextEditingController();
-  final _dateController = TextEditingController();
-  final _timeController = TextEditingController();
-  final _venueController = TextEditingController();
-  final _organiserNameController = TextEditingController();
-  final _formLinkController = TextEditingController();
-  final _feedbackController = TextEditingController();
-  final _drivelinkController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _venueController = TextEditingController();
+  final TextEditingController _organiserNameController = TextEditingController();
+  final TextEditingController _formLinkController = TextEditingController();
+  final TextEditingController _feedbackController = TextEditingController();
+  final TextEditingController _drivelinkController = TextEditingController();
   File? _receipt;
   final String typeOfEvent;
+
+  AddEventPage({Key? key, required this.typeOfEvent}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,8 +137,8 @@ class AddEventPage extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            var x = ImagePicker()
-                                .pickImage(source: ImageSource.gallery);
+                            // Implement your image picking logic here
+                            var x = ImagePicker().pickImage(source: ImageSource.gallery);
                             print('Image Picker');
                           },
                           child: Container(
@@ -160,7 +163,26 @@ class AddEventPage extends StatelessWidget {
               // Submit button
               const SizedBox(height: 15),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  // Prepare event data
+                  Map<String, dynamic> eventData = {
+                    'name': _nameController.text,
+                    'description': _descController.text,
+                    'date': _dateController.text,
+                    'time': _timeController.text,
+                    'venue': _venueController.text,
+                    'organiserName': _organiserNameController.text,
+                    'registrationLink': _formLinkController.text,
+                    'driveLink': _drivelinkController.text,
+                    // Add other fields as needed
+                  };
+
+                  // Call controller method to save event data
+                  addEventController.saveEventData(eventData);
+                  print("Event data: $eventData"); // Debug statement
+                  print("Complete"); // Debug statement
+                  Get.back();
+                },
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(

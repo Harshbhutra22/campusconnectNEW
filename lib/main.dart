@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:newcampusconnect/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      initialRoute: 'LoginPage',
       // theme: ThemeData(scaffoldBackgroundColor: Colors.black),
       debugShowCheckedModeBanner: false,
       home: Root(),
