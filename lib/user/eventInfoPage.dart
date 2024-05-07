@@ -21,6 +21,11 @@ class EventInfoPage extends StatelessWidget {
           spacing: 2.5,
         ),
         centerTitle: true,
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios_rounded, color: Colors.white)),
       ),
       body: SingleChildScrollView(
         child: Padding(

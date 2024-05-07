@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:newcampusconnect/login/loginpage.dart';
+import 'package:newcampusconnect/main.dart';
 import 'package:newcampusconnect/models.dart';
+import 'package:newcampusconnect/widgets/splash_screen.dart';
 
 class AuthService {
 
@@ -41,7 +44,7 @@ class AuthService {
   }
 
   // Auxiliary function to fetch all of a user's details from firestore
-  getOtherUserDetails(String email) async {
+  Future<Map<String, dynamic>> getOtherUserDetails(String email) async {
     var x = await _store.doc(email).get();
 
     return {
@@ -54,12 +57,12 @@ class AuthService {
 
   Future<void> logout() async {
     await _auth.signOut();
-    Get.offAllNamed('/login'); // Use '/login' to navigate to the login page
+    Get.offAll(LoginPage.routeName);
   }
 
 
-  signInWithEmailAndPassword(
-      {required String email, required String password}) async {
+
+  Future<String> signInWithEmailAndPassword({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return '';
@@ -75,8 +78,7 @@ class AuthService {
     required String password,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
       await _store.doc(email).set({
         'name': name,
         'pwd': password,
@@ -90,16 +92,16 @@ class AuthService {
     }
   }
 
-  resetPassword({required String email}) async {
+  Future<String> resetPassword({required String email}) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
       return '';
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      return e.message.toString();
     }
   }
 
-  deleteAccount() async {
+  Future<void> deleteAccount() async {
     await _auth.currentUser!.delete();
     _auth.signOut();
     print('Account Deleted!');

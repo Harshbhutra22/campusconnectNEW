@@ -24,21 +24,23 @@ class UserHomepage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            userHomepageTileBuilder('Club', context, 'assets/images/club.jpg'),
-            const SizedBox(height: 10),
-            userHomepageTileBuilder('Extra-Curriculars', context,
-                'assets/images/extracurricular.jpg'),
-            const SizedBox(height: 10),
-            userHomepageTileBuilder(
-                'Technical', context, 'assets/images/tech.jpg'),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              userHomepageTileBuilder('Club', context, 'assets/images/club.jpg'),
+              const SizedBox(height: 10),
+              userHomepageTileBuilder('Extra-Curriculars', context,
+                  'assets/images/extracurricular.jpg'),
+              const SizedBox(height: 10),
+              userHomepageTileBuilder(
+                  'Technical', context, 'assets/images/tech.jpg'),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar:
