@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:newcampusconnect/backend/authService.dart';
 import 'package:newcampusconnect/bottomNavBar.dart';
 import 'package:newcampusconnect/commons.dart';
+import 'package:newcampusconnect/login/loginpage.dart';
+import 'package:newcampusconnect/login/registerpage.dart';
 import 'package:newcampusconnect/models.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -86,6 +89,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 GestureDetector(
                   onTap: () async {
                     await AuthService().logout();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignupPage(
+                            callback: () {},
+                          ),
+                        ));
                     setState(() {});
                   },
                   child: Row(
