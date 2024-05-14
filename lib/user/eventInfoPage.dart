@@ -46,7 +46,8 @@ class EventInfoPage extends StatelessWidget {
     // Check if user ID is available
     if (userId.isNotEmpty) {
       // Create a UserRegistration object with event ID and user ID
-      UserRegistration registration = UserRegistration(eventId: event.id, userId: userId);
+      UserRegistration registration =
+      UserRegistration(eventId: event.id, userId: userId);
 
       // Push the registration data to Firebase Realtime Database
       _userRegistrationsRef.push().set(registration.toJson());
@@ -107,14 +108,19 @@ class EventInfoPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MyText(event.name ?? '', size: 26, weight: FontWeight.bold, spacing: 1.25),
+                  MyText(event.name ?? '',
+                      size: 26,
+                      weight: FontWeight.bold,
+                      spacing: 1.25),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  MyText('Organised by: ', size: 16, weight: FontWeight.bold),
-                  MyText(event.organisation ?? '', size: 16, spacing: 1.5),
+                  MyText('Organised by: ',
+                      size: 16, weight: FontWeight.bold),
+                  MyText(event.organisation ?? '',
+                      size: 16, spacing: 1.5),
                 ],
               ),
               const SizedBox(height: 20),
@@ -156,7 +162,8 @@ class EventInfoPage extends StatelessWidget {
                   GestureDetector(
                     onTap: registerForEvent, // Call function to register user for the event
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.black,

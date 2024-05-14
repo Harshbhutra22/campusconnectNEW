@@ -153,17 +153,28 @@ class _AddEventPageState extends State<AddEventPage> {
                 const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () {
+                    // Extract text values from controllers
+                    String id = _id.text;
+                    String name = _nameController.text;
+                    String description = _descController.text;
+                    String date = _dateController.text;
+                    String time = _timeController.text;
+                    String venue = _venueController.text;
+                    String organiserName = _organiserNameController.text;
+                    String registrationLink = _formLinkController.text;
+                    String driveLink = _drivelinkController.text;
+
                     // Prepare event data
                     Map<String, dynamic> eventData = {
-                      'id':_id,
-                      'name': _nameController.text,
-                      'description': _descController.text,
-                      'date': _dateController.text,
-                      'time': _timeController.text,
-                      'venue': _venueController.text,
-                      'organiserName': _organiserNameController.text,
-                      'registrationLink': _formLinkController.text,
-                      'driveLink': _drivelinkController.text,
+                      'id': id,
+                      'name': name,
+                      'description': description,
+                      'date': date,
+                      'time': time,
+                      'venue': venue,
+                      'organiserName': organiserName,
+                      'registrationLink': registrationLink,
+                      'driveLink': driveLink,
                       // Add other fields as needed
                     };
 
