@@ -1,10 +1,11 @@
-import 'package:newcampusconnect/backend/authService.dart';
-import 'package:newcampusconnect/commons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newcampusconnect/backend/authService.dart';
+import 'package:newcampusconnect/login/registerpage.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key, required this.callback}) : super(key: key);
 
-  const LoginPage({super.key, required this.callback});
   final VoidCallback callback;
 
   @override
@@ -16,7 +17,8 @@ class LoginPage extends StatelessWidget {
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key, required this.callback});
+  const LoginForm({Key? key, required this.callback}) : super(key: key);
+
   final VoidCallback callback;
 
   @override
@@ -27,7 +29,6 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String accountType = 'user';
 
   @override
   Widget build(BuildContext context) {
@@ -92,12 +93,25 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(height: 25),
                     GestureDetector(
                       onTap: () async {
-                        // Perform login action here
-                        String email = _emailController.text;
-                        String password = _passwordController.text;
-                        print('Email: $email, Password: $password');
-                        await AuthService().signInWithEmailAndPassword(
-                            email: email, password: password);
+                        if (_formKey.currentState!.validate()) {
+                          String email = _emailController.text;
+                          String password = _passwordController.text;
+                          print('Email: $email, Password: $password');
+                          try {
+                            await AuthService().signInWithEmailAndPassword(
+                              email: email,
+                              password: password,
+                            );
+                            _emailController.clear();
+                            _passwordController.clear();
+                          } catch (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Login failed. Please try again.'),
+                              ),
+                            );
+                          }
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -113,11 +127,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     const SizedBox(height: 20),
                     GestureDetector(
-                      onTap: () {
-                        widget.callback();
-                        // Navigate to registration page
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
-                      },
+                      onTap:()=>Get.to(SignupPage(callback: () {  },)),
                       child: Text('Don\'t have an account? Register'),
                     ),
                   ],

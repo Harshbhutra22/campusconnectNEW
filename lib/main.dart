@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:newcampusconnect/controller/logout_controller.dart';
 import 'package:newcampusconnect/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: Root(),
+      initialBinding: BindingsBuilder(() {
+        Get.put(LogoutController());
+      }),
     );
   }
 }

@@ -5,11 +5,10 @@ import 'package:newcampusconnect/commons.dart';
 import 'package:get/get.dart';
 import 'package:newcampusconnect/models/admin_model.dart';
 
-
 class AddEventPage extends StatefulWidget {
   final String typeOfEvent;
 
-  const AddEventPage({super.key, required this.typeOfEvent});
+  const AddEventPage({Key? key, required this.typeOfEvent}) : super(key: key);
 
   @override
   State<AddEventPage> createState() => _AddEventPageState();
@@ -17,26 +16,18 @@ class AddEventPage extends StatefulWidget {
 
 class _AddEventPageState extends State<AddEventPage> {
   final AddEventController addEventController = Get.put(AddEventController());
+  final TextEditingController _id=TextEditingController();
 
   // Controllers
   final TextEditingController _nameController = TextEditingController();
-
   final TextEditingController _descController = TextEditingController();
-
   final TextEditingController _dateController = TextEditingController();
-
   final TextEditingController _timeController = TextEditingController();
-
   final TextEditingController _venueController = TextEditingController();
-
   final TextEditingController _organiserNameController = TextEditingController();
-
   final TextEditingController _formLinkController = TextEditingController();
-
   final TextEditingController _feedbackController = TextEditingController();
-
   final TextEditingController _drivelinkController = TextEditingController();
-
   File? _receipt;
 
   @override
@@ -69,71 +60,51 @@ class _AddEventPageState extends State<AddEventPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MyText('Provide event details',
-                    size: 18, weight: FontWeight.bold, spacing: 1),
+                MyText('Provide event details', size: 18, weight: FontWeight.bold, spacing: 1),
                 const SizedBox(height: 10),
-        
-                // Name
                 MyTextField(
                   controller: _nameController,
                   label: 'Event Name',
                   hint: 'What is the name of your event',
                 ),
-        
-                // Desc
                 MyTextField(
                   controller: _descController,
                   label: 'Event Description',
                   hint: 'Tell us about your event',
                 ),
-        
-                // Date
                 MyTextField(
                   controller: _dateController,
                   label: 'Event Date',
                   hint: 'When is the event',
                 ),
-        
-                // Time
                 MyTextField(
                   controller: _timeController,
                   label: 'Event Time',
                   hint: 'Timing of your event',
                 ),
-        
-                // Venue
                 MyTextField(
                   controller: _venueController,
                   label: 'Event Venue',
                   hint: 'Where is your event hosted at',
                 ),
-        
-                // Organiser
                 MyTextField(
                   controller: _organiserNameController,
                   label: 'Organiser Name',
                   hint: 'Who is organising the event',
                 ),
-        
-                // Registration link
                 MyTextField(
                   controller: _formLinkController,
                   label: 'Registration Link',
                   hint: 'Registration link for the event',
                 ),
-        
-                // Google Drive Link
                 MyTextField(
                   controller: _drivelinkController,
-                  label: 'GoogleDrivelink ',
+                  label: 'Google Drive Link',
                   hint: 'Google drive link for videos',
                 ),
-        
-                // Poster Uploader
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.5, vertical: 17.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 17.5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(width: 0.5, color: Colors.black),
@@ -153,15 +124,19 @@ class _AddEventPageState extends State<AddEventPage> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              // Implement your image picking logic here
-                              var x = ImagePicker().pickImage(source: ImageSource.gallery);
-                              print('Image Picker');
+                              final imagePicker = ImagePicker();
+                              final XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
+                              if (image != null) {
+                                setState(() {
+                                  _receipt = File(image.path);
+                                });
+                              }
                             },
                             child: Container(
                               height: 150,
                               width: 150,
                               color: const Color.fromARGB(87, 158, 158, 158),
-                              child: const Center(
+                              child: Center(
                                 child: Icon(
                                   Icons.add_rounded,
                                   size: 40,
@@ -175,13 +150,12 @@ class _AddEventPageState extends State<AddEventPage> {
                     ],
                   ),
                 ),
-        
-                // Submit button
                 const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () {
                     // Prepare event data
                     Map<String, dynamic> eventData = {
+                      'id':_id,
                       'name': _nameController.text,
                       'description': _descController.text,
                       'date': _dateController.text,
@@ -192,7 +166,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       'driveLink': _drivelinkController.text,
                       // Add other fields as needed
                     };
-        
+
                     // Call controller method to save event data
                     addEventController.saveEventData(eventData);
                     print("Event data: $eventData"); // Debug statement

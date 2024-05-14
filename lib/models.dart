@@ -1,5 +1,6 @@
 class Event {
   Event({
+    required this.id,
     required this.name,
     required this.desc,
     required this.date,
@@ -12,6 +13,7 @@ class Event {
     required this.imgName,
   });
   String name,
+      id,
       desc,
       date,
       time,
