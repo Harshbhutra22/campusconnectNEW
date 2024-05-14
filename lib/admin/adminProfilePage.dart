@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:newcampusconnect/backend/authService.dart';
 import 'package:newcampusconnect/bottomNavBar.dart';
 import 'package:newcampusconnect/commons.dart';
+import 'package:newcampusconnect/controller/logout_controller.dart';
 import 'package:newcampusconnect/login/loginpage.dart';
 import 'package:newcampusconnect/login/registerpage.dart';
 import 'package:newcampusconnect/models.dart';
@@ -18,6 +19,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  // Add a variable to track the authentication state
+  bool isLoggedIn = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +52,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(width: 20),
                     (widget.user.role == 'user')
                         ? const Icon(Icons.person_rounded,
-                            color: Colors.white, size: 85)
+                        color: Colors.white, size: 85)
                         : const Icon(Icons.settings_suggest_rounded,
-                            color: Colors.white, size: 85),
+                        color: Colors.white, size: 85),
                     const SizedBox(width: 20),
                     Column(
                       children: [
@@ -86,17 +90,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: () async {
-                    await AuthService().logout();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignupPage(
-                            callback: () {},
-                          ),
-                        ));
-                    setState(() {});
+                InkWell(
+                  onTap: (){
+                    Get.find<LogoutController>().logoutAndNavigateToLogin();
                   },
                   child: Row(
                     children: [
@@ -134,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       bottomNavigationBar:
-          AdminBottomNavigationBar(selectedIndex: 1, user: widget.user),
+      AdminBottomNavigationBar(selectedIndex: 1, user: widget.user),
     );
   }
 }

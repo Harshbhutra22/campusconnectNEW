@@ -1,11 +1,11 @@
-import 'package:newcampusconnect/admin/adminscreen.dart';
-import 'package:newcampusconnect/backend/authService.dart';
-import 'package:newcampusconnect/commons.dart';
-import 'package:newcampusconnect/user/userhomepage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newcampusconnect/backend/authService.dart';
+import 'package:newcampusconnect/login/loginpage.dart';
 
 class SignupPage extends StatelessWidget {
-  const SignupPage({super.key, required this.callback});
+  const SignupPage({Key? key, required this.callback}) : super(key: key);
+
   final VoidCallback callback;
 
   @override
@@ -17,7 +17,8 @@ class SignupPage extends StatelessWidget {
 }
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({super.key, required this.callback});
+  const SignupForm({Key? key, required this.callback}) : super(key: key);
+
   final VoidCallback callback;
 
   @override
@@ -78,9 +79,9 @@ class _SignupFormState extends State<SignupForm> {
                           // User
                           GestureDetector(
                             onTap: () {
-                              accountType = "user";
-                              setState(() {});
-                              print(accountType);
+                              setState(() {
+                                accountType = "user";
+                              });
                             },
                             child: Container(
                               width: 75,
@@ -88,20 +89,24 @@ class _SignupFormState extends State<SignupForm> {
                                   horizontal: 15, vertical: 3),
                               decoration: BoxDecoration(
                                 border:
-                                    Border.all(width: 0.5, color: Colors.grey),
+                                Border.all(width: 0.5, color: Colors.grey),
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(5),
                                   bottomLeft: Radius.circular(5),
                                 ),
-                                color: Colors.black,
+                                color: accountType == 'user'
+                                    ? Colors.black
+                                    : Colors.grey,
                               ),
                               child: Center(
-                                child: MyText(
+                                child: Text(
                                   'User',
-                                  size: 14,
-                                  color: (accountType == 'user')
-                                      ? Colors.white
-                                      : Colors.grey,
+                                  style: TextStyle(
+                                    color: accountType == 'user'
+                                        ? Colors.white
+                                        : Colors.grey,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                             ),
@@ -110,9 +115,9 @@ class _SignupFormState extends State<SignupForm> {
                           // Admin
                           GestureDetector(
                             onTap: () {
-                              accountType = "admin";
-                              setState(() {});
-                              print(accountType);
+                              setState(() {
+                                accountType = "admin";
+                              });
                             },
                             child: Container(
                               width: 75,
@@ -120,26 +125,29 @@ class _SignupFormState extends State<SignupForm> {
                                   horizontal: 15, vertical: 3),
                               decoration: BoxDecoration(
                                 border:
-                                    Border.all(width: 0.5, color: Colors.grey),
+                                Border.all(width: 0.5, color: Colors.grey),
                                 borderRadius: const BorderRadius.only(
                                   topRight: Radius.circular(5),
                                   bottomRight: Radius.circular(5),
                                 ),
-                                color: Colors.black,
-                              ),
-                              child: MyText(
-                                'Admin',
-                                size: 14,
-                                color: (accountType == 'admin')
-                                    ? Colors.white
+                                color: accountType == 'admin'
+                                    ? Colors.black
                                     : Colors.grey,
+                              ),
+                              child: Text(
+                                'Admin',
+                                style: TextStyle(
+                                  color: accountType == 'admin'
+                                      ? Colors.white
+                                      : Colors.grey,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
-
                       TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(labelText: 'Name'),
@@ -177,7 +185,7 @@ class _SignupFormState extends State<SignupForm> {
                       TextFormField(
                         controller: _repasswordController,
                         decoration:
-                            InputDecoration(labelText: 'Confirm Password'),
+                        InputDecoration(labelText: 'Confirm Password'),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter your password';
@@ -189,33 +197,41 @@ class _SignupFormState extends State<SignupForm> {
                       SizedBox(height: 25),
                       GestureDetector(
                         onTap: () async {
-                          // Perform login action here
-                          String email = _emailController.text;
-                          String password = _passwordController.text;
-                          print('Email: $email, Password: $password');
-
-                          await AuthService().signUpWithUserCredentials(
+                          if (_formKey.currentState!.validate()) {
+                            String email = _emailController.text;
+                            String password = _passwordController.text;
+                            print('Email: $email, Password: $password');
+                            await AuthService().signUpWithUserCredentials(
                               name: _nameController.text,
                               email: email,
                               password: password,
-                              role: accountType);
+                              role: accountType,
+
+                            );
+                            _emailController.clear();
+                            _passwordController.clear();
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.black),
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black,
+                          ),
                           child: const Text(
                             'Sign Up',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
-                          widget.callback();
+                          Get.to(LoginPage(callback: () {}));
                         },
                         child: const Text('Already have an account? Login'),
                       ),
