@@ -9,7 +9,6 @@ import 'package:newcampusconnect/models.dart';
 import 'package:newcampusconnect/widgets/splash_screen.dart';
 
 class AuthService {
-
   final _auth = FirebaseAuth.instance;
   final _store = FirebaseFirestore.instance.collection('users');
 
@@ -57,10 +56,7 @@ class AuthService {
 
   Future<void> logout() async {
     await _auth.signOut();
-    Get.offAll(LoginPage.routeName);
   }
-
-
 
   Future<String> signInWithEmailAndPassword({required String email, required String password}) async {
     try {

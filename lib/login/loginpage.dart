@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
 
-  static const String routeName = 'LoginPage';
-
   const LoginPage({super.key, required this.callback});
   final VoidCallback callback;
 
