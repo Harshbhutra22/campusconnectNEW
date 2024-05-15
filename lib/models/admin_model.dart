@@ -6,9 +6,9 @@ class AddEventController extends GetxController {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void saveEventData(Map<String, dynamic> eventData) {
+  void saveEventData(Map<String, dynamic> eventData) async {
     try {
-      _firestore.collection('events').add(eventData);
+      await _firestore.collection('events').add(eventData);
       print('Event data successfully saved to Firestore: $eventData');
       print(uid);
     } catch (e) {

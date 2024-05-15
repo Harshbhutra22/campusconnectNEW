@@ -32,7 +32,8 @@ class UserHomepage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              userHomepageTileBuilder('Club', context, 'assets/images/tech.jpg'),
+              userHomepageTileBuilder(
+                  'Club', context, 'assets/images/club.jpg'),
               const SizedBox(height: 10),
               userHomepageTileBuilder('Extra-Curriculars', context,
                   'assets/images/extracurricular.jpg'),

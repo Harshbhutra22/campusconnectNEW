@@ -31,6 +31,26 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _repasswordController = TextEditingController();
   String accountType = 'user';
+  String errorMessage = '';
+
+  SignUpValidator() {
+    // Check if any of the values are null
+    if (_emailController.text.trim().isEmpty ||
+        _passwordController.text.isEmpty ||
+        _nameController.text.trim().isEmpty ||
+        _repasswordController.text.isEmpty) {
+      errorMessage = 'All fields mandatory!';
+    }
+
+    // Check if email is provided and valid
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(_emailController.text.trim())) {
+      errorMessage = 'Enter a valid e-mail address!';
+    }
+    if (_passwordController.text.length < 8) {
+      errorMessage = 'Password is too short!';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,17 +69,22 @@ class _SignupFormState extends State<SignupForm> {
                   child: Container(
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: Image.asset('assets/icons/logo.png'),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          clipBehavior: Clip.hardEdge,
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/icons/logo.png'),
+                          ),
                         ),
                         const Text(
                           'Campus Connect',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1,
-                            color: Color(0xff6666ff),
+                            color: Color.fromARGB(255, 0, 0, 0),
                             fontSize: 30,
                           ),
                         ),
@@ -67,6 +92,12 @@ class _SignupFormState extends State<SignupForm> {
                     ),
                   ),
                 ),
+                if (errorMessage.isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: MyText(errorMessage,
+                        color: Colors.red, size: 14, spacing: 1.5),
+                  ),
                 Container(
                   child: Column(
                     children: [
@@ -193,12 +224,20 @@ class _SignupFormState extends State<SignupForm> {
                           String email = _emailController.text;
                           String password = _passwordController.text;
                           print('Email: $email, Password: $password');
-
-                          await AuthService().signUpWithUserCredentials(
-                              name: _nameController.text,
-                              email: email,
-                              password: password,
-                              role: accountType);
+                          SignUpValidator();
+                          if (errorMessage.isEmpty) {
+                            errorMessage = await AuthService()
+                                .signUpWithUserCredentials(
+                                    name: _nameController.text,
+                                    email: email,
+                                    password: password,
+                                    role: accountType);
+                            if (errorMessage.isNotEmpty) {
+                              setState(() {});
+                            }
+                          } else {
+                            setState(() {});
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

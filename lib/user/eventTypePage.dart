@@ -25,9 +25,9 @@ class EventTypePage extends StatelessWidget {
         ),
         centerTitle: true,
         leading: InkWell(
-          onTap: (){
-            Navigator.pop(context);
-          },
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: Icon(Icons.arrow_back_ios_rounded, color: Colors.white)),
       ),
       body: Padding(
@@ -61,12 +61,12 @@ class EventTypePage extends StatelessWidget {
 
     Event event = Event(
       name: eventData['name'] ?? '',
-      desc: eventData['desc'] ?? '',
+      desc: eventData['description'] ?? '',
       date: eventData['date'] ?? '',
       driveLink: eventData['driveLink'] ?? '',
       feedback: eventData['feedback'] ?? '',
       formLink: eventData['formLink'] ?? '',
-      organisation: eventData['organisation'] ?? '',
+      organisation: eventData['organiserName'] ?? '',
       time: eventData['time'] ?? '',
       venue: eventData['venue'] ?? '',
       imgName: eventData['imgName'] ?? '',
